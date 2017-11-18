@@ -1,7 +1,7 @@
 import React, { Component }  from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { formatSeconds } from '../helpers/Helpers';
+import { formatSeconds } from '../../helpers/Helpers';
 
 export const Clock = ({ totalSeconds = 0}) => {
 
