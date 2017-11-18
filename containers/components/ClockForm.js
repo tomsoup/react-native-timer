@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View, TextInput, Button } from 'react-native';
 
 export const ClockForm = ({seconds, onType, onFormSubmit}) => {
@@ -26,4 +27,10 @@ const styles = {
     paddingTop: 20,
     alignItems: 'center'
   }
+};
+
+ClockForm.propTypes = {
+  seconds: PropTypes.string,
+  onType: PropTypes.func,
+  onFormSubmit: PropTypes.func
 };
