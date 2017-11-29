@@ -1,6 +1,6 @@
 import React, { Component }  from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Clock, ClockForm } from './components';
+import { Clock, ClockForm, Controls } from './components';
 
 export default class Count extends Component {
   constructor(props) {
@@ -26,18 +26,29 @@ export default class Count extends Component {
     }, 1000);
   }
 
+  stopCounting = () => {
+    this.setState({
+      totalSeconds: 0
+    });
+  }
+
+  pauseCount = () => {
+    clearInterval(this.timer);
+    this.timer = null;
+  }
 
   componentDidUpdate(prevProps, prevState) {
     console.log(this.state.countDownStatus);
     if (this.state.countDownStatus !== prevState.countDownStatus) {
       switch(this.state.countDownStatus) {
         case 'started':
-          this.startCounting();
-          break;
-        // case 'stopped';
-        //   return
-        // default:
-        //   return 'stopped';
+          return this.startCounting();
+        case 'paused':
+          return this.pauseCount();
+        case 'stopped':
+          return this.stopCounting();
+        default:
+          return this.stopCounting();
       }
     }
   }
@@ -71,15 +82,27 @@ export default class Count extends Component {
     this.setState({seconds});
   }
 
+  onControlsPress = (countDownStatus) => {
+      this.setState({countDownStatus});
+  }
+
 
   render() {
-    const { seconds, totalSeconds } = this.state;
+    const { seconds, totalSeconds, countDownStatus } = this.state;
+    const renderControls = () => {
+      if (countDownStatus !== 'stopped') {
+        return (
+          <Controls countDownStatus={countDownStatus} onControlsPress={this.onControlsPress} />
+        );
+      }
+    }
     return (
       <View>
       <Clock totalSeconds={totalSeconds} />
       <ClockForm
         seconds={seconds} onType={this.onInputChange} onFormSubmit={this.onFormSubmit}
       />
+      {renderControls()}
       </View>
     )
   }
